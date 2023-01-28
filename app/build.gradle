@@ -4,11 +4,15 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def incrementVersionCodeOnReleaseBuild() {
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.hasTask(':app:assembleRelease')) {
+            incrementVersionCode()
+        }
+    }
+}
 
-android {
-    namespace 'com.example.fastdroid'
-    compileSdk 33
-
+def incrementVersionCode() {
     Properties properties = new Properties()
     def _versionCode
     def _versionName
@@ -24,14 +28,52 @@ android {
     } else {
         throw new GradleException("Could not read version.properties!")
     }
+}
 
+// create a gradle task to run incrementVersionCode
+task incrementVersionCode {
+    doLast {
+        incrementVersionCode()
+    }
+}
+
+def versionCodeFromLocalProperties() {
+    Properties properties = new Properties()
+    def _versionCode
+    if (project.rootProject.file('local.properties').canRead()) {
+        properties.load(new FileInputStream(project.rootProject.file('local.properties')))
+        _versionCode = properties['versionCode'].toInteger()
+        return _versionCode
+    } else {
+        throw new GradleException("Could not read version.properties!")
+    }
+}
+
+def versionNameFromLocalProperties() {
+    Properties properties = new Properties()
+    def _versionName
+    if (project.rootProject.file('local.properties').canRead()) {
+        properties.load(new FileInputStream(project.rootProject.file('local.properties')))
+        _versionName = properties['versionName']
+        return _versionName
+    } else {
+        throw new GradleException("Could not read version.properties!")
+    }
+}
+
+android {
+    namespace 'com.example.fastdroid'
+    compileSdk 33
+
+
+//    incrementVersionCodeOnReleaseBuild()
 
     defaultConfig {
         applicationId "com.example.fastdroid"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0.0"
+        versionCode versionCodeFromLocalProperties()
+        versionName versionNameFromLocalProperties()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
