@@ -46,9 +46,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.6.10'
+          ruby-version: '3.0' # Not needed with a .ruby-version file
+          bundler-cache: true
       - name: Fastlane tests
-        run: fastlane unit_test_and_message
+        run: bundle exec fastlane unit_test_and_message
