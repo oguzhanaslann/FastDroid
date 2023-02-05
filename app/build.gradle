@@ -31,13 +31,6 @@ def incrementVersionCode() {
     }
 }
 
-// create a gradle task to run incrementVersionCode
-task incrementVersionCode {
-    doLast {
-        incrementVersionCode()
-    }
-}
-
 def versionCodeFromLocalProperties() {
     Properties properties = new Properties()
     def _versionCode
@@ -66,15 +59,14 @@ android {
     namespace 'com.example.fastdroid'
     compileSdk 33
 
-
-//    incrementVersionCodeOnReleaseBuild()
-
     defaultConfig {
         applicationId "com.example.fastdroid"
         minSdk 24
         targetSdk 33
-        versionCode versionCodeFromLocalProperties()
-        versionName versionNameFromLocalProperties()
+//        versionCode versionCodeFromLocalProperties()
+//        versionName versionNameFromLocalProperties()
+        versionCode 11
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
