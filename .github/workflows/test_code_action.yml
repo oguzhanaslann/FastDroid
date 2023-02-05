@@ -47,4 +47,4 @@ jobs:
         with:
           java-version: 11
       - name: Fastlane tests
-        run: fastlane run unit_test_and_message
+        run: fastlane unit_test_and_message
