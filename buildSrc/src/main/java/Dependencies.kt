@@ -5,4 +5,5 @@ object Versions {
 
 object Dependencies {
     val androidCoreX = "androidx.core:core-ktx:${Versions.androidCoreX}"
+    @JvmStatic get
 }
